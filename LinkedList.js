@@ -29,7 +29,7 @@ function LinkedList(){
     };
 
     //在指定位置插入元素
-    this.insert=function(position,elment){
+    this.insert=function(position,element){
 
         //检查越界
         if(position>-1&&position<length)
@@ -66,7 +66,11 @@ function LinkedList(){
         }
     };
 
-    this.remove=function(){};
+    //移除指定元素
+    this.remove=function(element){
+        var index=this.indexOf(element);
+        return this.removeAt(index);
+    };
 
     //根据指定位置移除元素
     this.removeAt=function(position){
@@ -90,7 +94,7 @@ function LinkedList(){
                     current=current.next;
                 }
 
-                previous=current.next;
+                previous.next=current.next;
             }
 
             length--;
@@ -103,7 +107,24 @@ function LinkedList(){
         }
     };
 
-    this.indexOf=function(){};
+    //查找指定元素的所引
+    this.indexOf=function(element){
+        var current=head;
+        var index=0;
+
+        while(current)
+        {
+            if(element===current.element)
+            {
+                return index;
+            }
+
+            current=current.next;
+            index++;
+        }
+        //未查找到,便于remove调用
+        return -1;
+    };
 
     //判断链表是否为空
     this.isEmpty=function(){
@@ -122,11 +143,38 @@ function LinkedList(){
 
         while(current)
         {
-            string=current.element;
+            string=string+'/'+current.element;
             current=current.next;
         }
         return string;
     };
 
-    this.print=function(){};
+    //输出指定元素
+    this.print=function(position){
+        current=head;
+        var index=0;
+
+        if(position>-1&&position<length)
+        {
+            if(position===0)
+            {
+                return current.element;
+            }
+            else
+            {
+                //可以不判断position===0,直接用while循环
+                while(index++<position)
+                {
+                    current=current.next;
+                }
+                return current.element;
+            }
+
+        }
+
+        else
+        {
+            return null;
+        }
+    };
 }
