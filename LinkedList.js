@@ -30,7 +30,42 @@ function LinkedList(){
 
     this.insert=function(){};
     this.remove=function(){};
-    this.removeAt=function(){};
+
+    //根据指定位置移除元素
+    this.removeAt=function(position){
+        var current =head;
+        var previous=null;
+        var index=0;
+
+        //检测是否越界
+        if(position>-1&&position<length)
+        {
+            if(position===0)
+            {
+                head=current.next;
+            }
+            else
+            {
+                //找到指定元素
+                while(index++<position)
+                {
+                    previous=current;
+                    current=current.next;
+                }
+
+                previous=current.next;
+            }
+
+            length--;
+
+            return current.element;
+        }
+        else
+        {
+            return null;
+        }
+    };
+
     this.indexOf=function(){};
     this.isEmpty=function(){};
     this.size=function(){};
