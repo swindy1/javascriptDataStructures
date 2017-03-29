@@ -35,6 +35,29 @@ function Set(){
         return false;
     }
 
+    //移除所有元素
+    this.clear=function(){
+        items={};
+    }
+
+    //获取集合中有多少项元素
+    this.size=function(){
+        //使用Object的keys方法，返回一个数组
+        return Object.keys(items).length;
+    }
+
+    //返回集合中包含所有值的数组
+    this.values=function(){
+        return Object.keys(items);
+        /*或者
+        var keys=[];
+        for(var key in items)
+        {
+            keys.push(key);
+        }
+        return keys;
+        */
+    }
 
     
 }
