@@ -104,4 +104,24 @@ function Set(){
         }
         return differenceSet;
     }
+
+    //Set是otherSet的子集
+    this.subSet=function(otherSet){
+        if(this.size()<otherSet.size())
+        {
+            return false;
+        }
+        else
+        {
+            var values=this.values();
+            for(var i+0;i<values.length;i++)
+            {
+                if(!otherSet.has(values[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }
