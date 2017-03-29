@@ -75,4 +75,19 @@ function Set(){
         }
         return unionSet;
     }
+
+    //交集
+    this.intersection=function(otherSet){
+        var intersectionSet=new Set();
+        var values=this.values();
+        for(var i=0;i<values.length;i++)
+        {
+            if(otherSet.has(values[i]))
+            {
+                intersection.add(values[i]);
+            }
+        }
+
+        return intersectionSet;
+    }
 }
