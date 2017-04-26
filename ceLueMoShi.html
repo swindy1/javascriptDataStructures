@@ -1,0 +1,132 @@
+//策略模式
+<html>
+<head>
+    <meta charset="utf-8">
+
+</head>
+<body>
+<form id="reg" action="">
+	<input type="text" name="userName" />
+	<input type="text" name="password" />
+    <input type="text" name="phone" />
+	<button id="btn">提交</button>
+</form>
+<div>
+    <input type="text" name="12" id="d1" />
+    <button id="b1" name="B1">输出</button>
+</div>
+	<script>
+
+    var strategies={
+	isNonEmpty:function(value,errorMsg){//不能为空
+        //alert(value);
+		if(value===''){
+			return errorMsg;
+		}
+    },
+	minLength:function(value,length,errorMsg){//最小长度
+		if(value.length<length){
+			return errorMsg;
+		}
+	},
+    maxLength:function(value,length,errorMsg){//最大长度
+        if(value.length>length)
+        {
+            return errorMsg;
+        }
+    },
+    regexCheck:function(value,regex,errorMsg){//正则校验
+        var reg=eval(regex);//将字符串转为正则表达式
+        if(!(reg.test(value)))
+        {
+            return errorMsg;
+        }
+    }
+};
+
+		var Validator=function(){
+			this.cache=[];
+		};
+
+
+				Validator.prototype.add=function(dom,rules){
+                    var self=this;
+                    for(var i=0,rule;rule=rules[i++];)
+                    {
+                        (function(rule){
+                            var strategyAry=rule.strategy.split(':');
+                            var errorMsg=rule.errorMsg;
+
+                            self.cache.push(function(){
+                                var strategy=strategyAry.shift();
+                                strategyAry.unshift(dom.value);
+                                strategyAry.push(errorMsg);
+                                return strategies[strategy].apply(dom,strategyAry);
+                            });
+                        })(rule)
+                    }
+				};
+
+Validator.prototype.start=function(){
+	for(var i=0, validatorFunc;validatorFunc=this.cache[i++];)
+	{
+		var msg=validatorFunc();
+		if(msg)
+		{
+			return msg;
+	    }
+    }
+};
+
+
+
+
+    var　reg=document.getElementById('reg');
+    var validataFunc=function()
+    {
+        var validator=new Validator();
+        validator.add(reg.userName,[{
+            strategy:'isNonEmpty',
+            errorMsg:'用户名不能为空'
+        },{
+            strategy:'minLength:6',
+            errorMsg:'用户名长度不能小于6'
+        }]);
+
+        validator.add(reg.password,[{
+            strategy:"maxLength:10",
+            errorMsg:'密码长度必须大于10'
+        }]);
+
+        validator.add(reg.phone,[{
+            strategy:"regexCheck:/^1[34578]\d{9}$/",
+            errorMsg:'请输入正确的手机号'
+        }]);
+
+        var errorMsg=validator.start();
+        return errorMsg;//一旦出现错误信息立即返回；不必判读下一文本框输入是否符合要求，直到当前问题解决
+    };
+
+	reg.onsubmit=function(){
+
+        var errorMsg=validataFunc();
+        if(errorMsg)
+        {
+            alert(errorMsg);
+        }
+        return false;
+	};
+
+    var d1=document.getElementById('d1');
+    var b1=document.getElementById('b1');
+    b1.onclick=function(){
+        if(!/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(d1.value))
+        {
+            alert(d1.value);
+        }
+
+    };
+
+    </script>
+</body>
+</html>
